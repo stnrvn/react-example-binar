@@ -61,7 +61,38 @@ const EditModal = () => {
 
 }
 
+const DeleteModal = ({
+  id,
+  show,
+  handleDeleteModal,
+  handleSubmitDelete
+}) => {
+  return(
+    <>
+      <Modal show={show} onHide={handleDeleteModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Form Delete Player</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+           Are you sure to delete this?
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleDeleteModal}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={() => handleSubmitDelete(id)}>
+            Yes
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
+  )
+}
+
 export {
   AddModal,
-  EditModal
+  EditModal,
+  DeleteModal
 }

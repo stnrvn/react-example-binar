@@ -3,12 +3,16 @@ import './App.css'
 import MyNavbar from './components/Navbar'
 import {
   AddModal,
-  EditModal
+  EditModal,
+  DeleteModal
 } from './components/Forms'
 import { useState } from 'react'
 
 function App() {
   const [showAddModal, setAddShowModal] = useState(false)
+  const [showEditModal, setEditShowModal] = useState(false)
+  const [showDeleteModal, setDeleteShowModal] = useState(false)
+
   const [data, setData] = useState([
     {
       username: 'user 1',
@@ -30,8 +34,19 @@ function App() {
     }
   ])
 
+  const [id, setId] = useState(null)
+
   const handleAddModal = () => {
     setAddShowModal(!showAddModal)
+  }
+
+  const handleEditModal = () => {
+    setEditShowModal(!showEditModal)
+  }
+
+  const handleDeleteModal = (index) => {
+    setId(index)
+    setDeleteShowModal(!showDeleteModal)
   }
 
   const handleSubmitAdd = (username, email, experience, level) => {
@@ -47,7 +62,17 @@ function App() {
     rawData.push(payload)
 
     setData(rawData)
-    setAddShowModal(!showAddModal)
+    setAddShowModal(false)
+  }
+
+  const handleSubmitDelete = (idData) => {
+    let temp = data.filter((data, i) => {
+      return i !== idData
+    })
+
+    setData(temp)
+
+    setDeleteShowModal(false)
   }
 
   return (
@@ -57,6 +82,12 @@ function App() {
       show={showAddModal}
       handleAddModal={handleAddModal}
       handleSubmitAdd={handleSubmitAdd}
+    />
+    <DeleteModal
+      id={id}
+      show={showDeleteModal}
+      handleDeleteModal={handleDeleteModal}
+      handleSubmitDelete={handleSubmitDelete}
     />
     <div className="container">
         <div className="row mt-3">
@@ -76,6 +107,12 @@ function App() {
                   <p>email: {data.email}</p>
                   <p>experience: {data.experience}</p>
                   <p>level: {data.level}</p>
+                  <p>
+                    <button type="button" class="btn btn-primary" onClick={handleEditModal}>Edit Data</button>
+                  </p>
+                  <p>
+                    <button type="button" class="btn btn-danger" onClick={() => handleDeleteModal(index)}>Delete Data</button>
+                  </p>
                 </div>
               </>
             )
